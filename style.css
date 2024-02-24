@@ -1,0 +1,13 @@
+.flex-item{
+    display: flex;
+    /* flex-wrap: nowrap; */
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+    border: 2px solid black;
+    width: 300px;
+    padding: 10px;
+}
+.T-shirts-collections{
+    float: left;
+}
