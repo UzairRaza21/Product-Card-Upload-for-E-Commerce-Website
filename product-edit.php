@@ -13,7 +13,8 @@
     <input type="text" name="product_id" id="">
     </label><br><br>
 
-    <input type="submit" value="Show" name="product-edit"><br>
+    <input type="submit" value="Show" name="product-edit">
+    <input type="submit" value="Delete" name="product-delete">
 
 </form>
 
@@ -28,7 +29,7 @@ if(isset($_POST['product-edit'])){
 
     while($row = mysqli_fetch_assoc($result)){
         ?>
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
         <label for="product-name">Product Title
             <input type="text" name="product-name" value="<?php echo $row['product_name']; ?>" >
         </label><br><br>
@@ -41,9 +42,8 @@ if(isset($_POST['product-edit'])){
             <input type="file" name="product-image" id="" value="<?php echo $row['product_image']; ?>">
         </label><br><br>
 
-        <input type="submit" value="Upload Product" name="upload-product">
+        <input type="submit" value="Edit Product" name="upload-product">
     </form>
-
 
 <?php
          }
@@ -51,9 +51,39 @@ if(isset($_POST['product-edit'])){
 }
 ?>
 
+<?php
+
+if (isset($_POST['upload-product'])){
+include('conn.php');
+
+$pname = $_POST['product_name'];
+$pdescription = $_POST['product_description'];
+$pimage = $_POST['product-image'];
 
 
+$sql = "UPDATE `product`SET `product_name` = '{$pname}', `product_description` = '{$pdescription}', `product_image` = '{$pimage}' WHERE product_id = '{$p_id}'";
+$result = mysqli_query($conn, $sql) or die ("Query not successful");
 
+header('location: product-display.php');
+mysqli_close($conn);
+
+}
+?>
+
+<!-- Delete Start -->
+
+<?php
+if (isset($_POST['product-delete'])){
+    include('conn.php');
+    $p_id = $_POST['product_id'];
+    $sql = "DELETE FROM `product` WHERE product_id = '{$p_id}'";
+    $result = mysqli_query($conn, $sql) or die ("Query Unsuccessful");
+    header("location: product-display.php");
+    mysqli_close($conn);
+}
+?>
+
+<!-- Delete End -->
 
     
 </body>
